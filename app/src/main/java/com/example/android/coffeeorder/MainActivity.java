@@ -9,40 +9,77 @@
 package com.example.android.coffeeorder;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-//import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.text.NumberFormat;
 
 /**
  * This app displays an order form to order coffee.
  */
 
 public class MainActivity extends AppCompatActivity {
-    int quantityOfCoffee = 0;
+    int quantityOfCoffee = 1;
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
 
-    private String createOrderSummary(int price) {
-        String priceMessage = "Name: Eloke Tobe";
+    private String createOrderSummary() {
+        String priceMessage = "Name: " + getUserName();
         priceMessage += "\nQuantity :" + quantityOfCoffee;
-        priceMessage += "\nTotal: $" + price;
+        if (checkWhippedCreamTopping()) {
+            priceMessage += "\nWhipped Cream added";
+        }
+        if (checkChocolateTopping()) {
+            priceMessage += "\nChocolate added";
+        }
+        priceMessage += "\nTotal: $" + calculatePrice();
         priceMessage += "\nThank You";
         return priceMessage;
     }
 
-    private int calculatePrice() {
+    private String getUserName() {
+        EditText nameTextInput = (EditText) findViewById(R.id.name_input_text);
+        userName = nameTextInput.getText().toString();
+        return userName;
+    }
 
-        return quantityOfCoffee * 5;
+    private boolean checkWhippedCreamTopping() {
+        CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.whipped_cream_check_box);
+        return whippedCreamCheckBox.isChecked();
+    }
+
+    private boolean checkChocolateTopping() {
+        CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.chocolate_check_box);
+        return chocolateCheckBox.isChecked();
+    }
+
+    private int calculatePrice() {
+        int basePrice = 5;
+        int totalPrice;
+        if (checkWhippedCreamTopping()) {
+
+            basePrice += 1;
+        }
+        if (checkChocolateTopping()) {
+            basePrice += 2;
+        }
+        totalPrice = basePrice * quantityOfCoffee;
+
+        return totalPrice;
     }
 
     /**
@@ -50,22 +87,33 @@ public class MainActivity extends AppCompatActivity {
      */
 
     public void submitOrder(View view) {
-        int price = calculatePrice();
-        String priceMessage =createOrderSummary(price);
-
-        displayMessage(priceMessage);
+        Toast.makeText(getApplicationContext(), "order placed", Toast.LENGTH_LONG).show();
+createOrderSummary();
+        Intent intent = new Intent (Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Coffee order for " + userName);
+        intent.putExtra(Intent.EXTRA_TEXT, createOrderSummary());
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     public void increment(View view) {
-        quantityOfCoffee++;
-        displayCoffeeQuantity(quantityOfCoffee);
-
+        if (quantityOfCoffee < 100) {
+            quantityOfCoffee++;
+            displayCoffeeQuantity(quantityOfCoffee);
+        } else {
+            Toast.makeText(getApplicationContext(), "order quantity cannot be greater than 100", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void decrement(View view) {
-        quantityOfCoffee--;
-        displayCoffeeQuantity(quantityOfCoffee);
-
+        if (quantityOfCoffee > 1) {
+            quantityOfCoffee--;
+            displayCoffeeQuantity(quantityOfCoffee);
+        } else {
+            Toast.makeText(getApplicationContext(), "order quantity cannot be less than 1", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -76,19 +124,5 @@ public class MainActivity extends AppCompatActivity {
         quantityTextView.setText("" + number);
     }
 
-    /**
-     * This method displays the given price on the screen.
-     */
-    private void displayPrice(int number) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
-    }
 
-    /**
-     * This method displays the given text on the screen.
-     */
-    private void displayMessage(String message) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(message);
-    }
 }
