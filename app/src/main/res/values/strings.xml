@@ -1,3 +1,62 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Coffee Order</string>
+    <!--    Hint text for the name edit text view [CHAR LIMIT = NONE]-->
+    <string name="name_indicator">Name</string>
+    <!--    Header text for the list of toppings [CHAR LIMIT = 20]-->
+    <string name="toppings_header">Toppings</string>
+    <!--    text for whipped cream option check box [CHAR LIMIT = 25]-->
+    <string name="whipped_cream">Whipped Cream ($1)</string>
+    <!--    text for whipped cream option check box [CHAR LIMIT = 25]-->
+    <string name="chocolate">Chocolate ($2)</string>
+    <!--    Header for Quantity option check box [CHAR LIMIT = 25]-->
+    <string name="quantity">Quantity</string>
+    <!--    sign for decrement for the quantity value[CHAR LIMIT = 1]-->
+    <string name="decrement_sign">-</string>
+    <!--    value representing quantity[CHAR LIMIT = 3]-->
+    <string name="quantity_value">1</string>
+    <!--    sign for increment for the quantity value  [CHAR LIMIT = 1]-->
+    <string name="increment_sign">+</string>
+    <!--    text for order buton  [CHAR LIMIT = 10]-->
+    <string name="order_button_text">Order</string>
+    <!--    Name in the order summary, it should carry the formart of: Name: Tobe
+    where Tobe is the name of the user [CHAR LIMIT = NONE]-->
+    <string name="order_summary_name">Name: <xliff:g example="Tobe" id="name">%s</xliff:g> </string>
+
+    <!--    Quantity in the order summary, it should carry the formart of: Quanity: 100
+    where 100 is the quantity of the coffee selected [CHAR LIMIT = 3]-->
+    <string name="order_summary_quantity">Quantity: <xliff:g example="10" id="quantity">%d</xliff:g> </string>
+
+
+    <!--   text telling user that whipped cream has been added [CHAR LIMIT = none]-->
+    <string name="whipped_cream_added_notifier">Whipped cream added</string>
+    <!--   text telling user that chocolate has been added  [CHAR LIMIT = none]-->
+    <string name="chocolate_added_notifier">Chocolate added</string>
+
+
+    <!--    text to show the user the total price of cofee to be purchased in the format of: Total: 10
+    where 10 is the total price of order[CHAR LIMIT = 5]-->
+    <string name="total_coffee_order_price">Total: <xliff:g example="10" id="price">%s</xliff:g> </string>
+
+
+
+    <!--   text saying thank you to user for making order  [CHAR LIMIT = 15]-->
+    <string name="thank_you_message">Thank You</string>
+
+
+    <!--   toast text for warning user about the decrement limit  [CHAR LIMIT = none]-->
+    <string name="decrement_limit_toast_text">order quantity cannot be less than 1</string>
+
+
+    <!--   toast text for warning user about the increment limit  [CHAR LIMIT = none]-->
+    <string name="increment_limit_toast_text">order quantity cannot be greater than 100</string>
+
+    <!--   toast text for notifying order has been placed  [CHAR LIMIT = none]-->
+    <string name="order_confirmation">order received</string>
+
+
+    <!--    email subject text, it should carry the formart of: "Coffee order for Tobe"
+     where Tobe is the name of the user [CHAR LIMIT = NONE]-->
+    <string name="email_subject">Coffee order for <xliff:g example="Tobe" id="user_name">%s</xliff:g> </string>
+
+
 </resources>

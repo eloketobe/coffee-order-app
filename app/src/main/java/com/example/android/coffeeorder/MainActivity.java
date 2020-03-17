@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.NumberFormat;
+
 /**
  * This app displays an order form to order coffee.
  */
@@ -38,16 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     private String createOrderSummary() {
-        String priceMessage = "Name: " + getUserName();
-        priceMessage += "\nQuantity :" + quantityOfCoffee;
+        String priceMessage = getString(R.string.order_summary_name, getUserName());
+        priceMessage += "\n" + getString(R.string.order_summary_quantity, quantityOfCoffee);
         if (checkWhippedCreamTopping()) {
-            priceMessage += "\nWhipped Cream added";
+            priceMessage += "\n" + getString(R.string.whipped_cream_added_notifier);
         }
         if (checkChocolateTopping()) {
-            priceMessage += "\nChocolate added";
+            priceMessage += "\n" + getString(R.string.chocolate_added_notifier);
         }
-        priceMessage += "\nTotal: $" + calculatePrice();
-        priceMessage += "\nThank You";
+        priceMessage += "\n" + getString(R.string.total_coffee_order_price, NumberFormat.getCurrencyInstance().format(calculatePrice()));
+        priceMessage += "\n" + getString(R.string.thank_you_message);
         return priceMessage;
     }
 
@@ -87,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
      */
 
     public void submitOrder(View view) {
-        Toast.makeText(getApplicationContext(), "order placed", Toast.LENGTH_LONG).show();
-createOrderSummary();
-        Intent intent = new Intent (Intent.ACTION_SENDTO);
+        Toast.makeText(getApplicationContext(), R.string.order_confirmation, Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Coffee order for " + userName);
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject, getUserName()));
         intent.putExtra(Intent.EXTRA_TEXT, createOrderSummary());
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
@@ -103,7 +105,7 @@ createOrderSummary();
             quantityOfCoffee++;
             displayCoffeeQuantity(quantityOfCoffee);
         } else {
-            Toast.makeText(getApplicationContext(), "order quantity cannot be greater than 100", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.increment_limit_toast_text), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -112,7 +114,7 @@ createOrderSummary();
             quantityOfCoffee--;
             displayCoffeeQuantity(quantityOfCoffee);
         } else {
-            Toast.makeText(getApplicationContext(), "order quantity cannot be less than 1", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.decrement_limit_toast_text), Toast.LENGTH_LONG).show();
         }
     }
 
